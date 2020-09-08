@@ -35,13 +35,15 @@
         </el-menu>
       </div>
       <div class="right-content">
-        
+        <el-button @click="add">添加</el-button>
+        <el-button @click="getList">获取</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { addArticle, getArticle } from '@/api/api'
 export default {
   name: 'Home',
   data() {
@@ -58,7 +60,6 @@ export default {
   },
   mounted() {
     console.log(this.routeData, '-------routeArr')
-    this.login()
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -67,6 +68,27 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
+    add() {
+      let data = {
+        title: 'test111',
+        author: 'djh',
+        content: '生理健康管理师大哥肯定是开了个理论上的   速度快根据老师过来开始了的价格啦dfbdfbdfbdfsbs'
+      }
+      addArticle(data).then(res => {
+
+      })
+    },
+    getList() {
+      let params = {
+        title: '',
+        author: '',
+        pageSize: 10,
+        currentPage: 1
+      }
+      getArticle(params).then(res => {
+
+      })
+    }
   }
 }
 </script>

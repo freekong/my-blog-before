@@ -17,3 +17,19 @@ export function register(data) {
     data
   })
 }
+// 添加文章 /addArticle
+export function addArticle(data) {
+  return request({
+    url: '/addArticle',
+    method: 'post',
+    data
+  })
+}
+// 获取文章列表 /getArticleList
+export function getArticle(params) {
+  return request({
+    url: '/getArticleList',
+    method: 'get',
+    params
+  })
+}
