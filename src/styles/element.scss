@@ -1,0 +1,25 @@
+.el-table--border:after,
+.el-table--group:after,
+.el-table:before {
+    background-color: #666;
+}
+
+.el-table--border,
+.el-table--group {
+    border-color: #666;
+}
+
+.el-table td,
+.el-table th.is-leaf {
+        border-bottom: 1px solid #666;
+}
+
+.el-table--border th,
+.el-table--border th.gutter:last-of-type {
+        border-bottom: 1px solid #666;
+}
+
+.el-table--border td,
+.el-table--border th {
+        border-right: 1px solid #666;
+}

@@ -55,8 +55,8 @@ export default {
   align-items: center;
   padding-top: 300px;
   .login {
-    width: 500px;
-    height: 200px;
+    width: 560px;
+    height: 300px;
     border: 1px solid #00171F;
     border-radius: 4px;
     padding: 40px;

@@ -8,42 +8,38 @@
     </header>
     <div class="main">
       <div class="left-menu">
-        <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-          <el-menu-item index="1">
-            <i class="el-icon-s-home"></i>
-            <span slot="title">首页</span>
-          </el-menu-item>
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-document"></i>
-              <span slot="title">文章</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="1-1">文章管理</el-menu-item>
-              <el-menu-item index="1-2">文章分类</el-menu-item>
-              <el-menu-item index="1-3">统计</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-menu-item index="3">
-            <i class="el-icon-setting"></i>
-            <span slot="title">用户管理</span>
-          </el-menu-item>
-          <el-menu-item index="3">
-            <i class="el-icon-setting"></i>
-            <span slot="title">设置</span>
-          </el-menu-item>
+        <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" router>
+          <template v-for="(item, index) in routeData">
+            <el-submenu v-if="!item.onlyOne" :key="index" :index="item.path">
+                <template slot="title">
+                  <i :class="item.icon"></i>
+                  <span slot="title">{{item.title}}</span>
+                </template>
+                <el-menu-item-group v-for="child in item.children" :key="child.name">
+                  <el-menu-item v-if="!child.hidden" :index="child.path">{{child.title}}</el-menu-item>
+                </el-menu-item-group>
+            </el-submenu>
+            <el-menu-item v-if="item.onlyOne" :key="index" :index="item.path">
+              <i :class="item.icon"></i>
+              <span slot="title">{{item.title}}</span>
+            </el-menu-item>
+          </template>
         </el-menu>
+        <template>
+          <div class="menu-set-box">
+            <i :class="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'" @click="foldMenu"></i>
+          </div>
+        </template>
       </div>
       <div class="right-content">
-        <el-button @click="add">添加</el-button>
-        <el-button @click="getList">获取</el-button>
+        <router-view></router-view>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { addArticle, getArticle } from '@/api/api'
+import { addArticle } from '@/api/api'
 export default {
   name: 'Home',
   data() {
@@ -55,13 +51,21 @@ export default {
   },
   computed: {
     routeData() {
-      return this.$router.options.routes
+      return this.$router.options.routes.filter(item => !item.hidden)
     }
   },
   mounted() {
     console.log(this.routeData, '-------routeArr')
   },
   methods: {
+    /**
+     * @description: 折叠菜单
+     * @param {type} 
+     * @return {type} 
+     */
+    foldMenu() {
+      this.isCollapse = !this.isCollapse
+    },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -75,17 +79,6 @@ export default {
         content: '生理健康管理师大哥肯定是开了个理论上的   速度快根据老师过来开始了的价格啦dfbdfbdfbdfsbs'
       }
       addArticle(data).then(res => {
-
-      })
-    },
-    getList() {
-      let params = {
-        title: '',
-        author: '',
-        pageSize: 10,
-        currentPage: 1
-      }
-      getArticle(params).then(res => {
 
       })
     }
@@ -112,14 +105,28 @@ export default {
   }
   .main {
     display: flex;
+    height: 100%;
     .left-menu {
+      height: 100%;
+      position: relative;
       .el-menu-vertical-demo:not(.el-menu--collapse) {
         width: 200px;
         min-height: 400px;
       }
+      .menu-set-box {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        text-align: right;
+        i {
+          cursor: pointer;
+          font-size: 28px;
+          color: #333;
+        }
+      }
     }
     .right-content {
-
+      width: 100%;
     }
   }
 }
